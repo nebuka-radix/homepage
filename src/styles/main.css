@@ -1660,3 +1660,232 @@ h3,
 }
 
 /* mobile-presentation:end */
+
+/* abstract-scene-backgrounds:start */
+
+/*
+ * GSAPが変更するbackground-colorとは分離して描画。
+ * backgroundの一括指定は使わず、既存の背景色を保持する。
+ */
+.scene-section {
+  background-image: var(--scene-pattern, none);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+/* HERO：右上の光と、左下から広がる淡いブルー */
+[data-scene="hero"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at 90% 12%,
+      rgb(255 255 255 / 90%) 0%,
+      rgb(255 255 255 / 35%) 25%,
+      transparent 56%
+    ),
+    radial-gradient(
+      ellipse at 3% 95%,
+      rgb(152 176 245 / 22%) 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      125deg,
+      transparent 58%,
+      rgb(255 255 255 / 28%) 58%,
+      rgb(255 255 255 / 8%) 83%,
+      transparent 83%
+    );
+}
+
+/* ABOUT：大きな曲線と、セージグリーンのにじみ */
+[data-scene="about"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at -12% 110%,
+      transparent 0%,
+      transparent 44%,
+      rgb(255 255 255 / 42%) 44.2%,
+      rgb(255 255 255 / 42%) 55%,
+      transparent 55.2%
+    ),
+    radial-gradient(
+      ellipse at 95% 5%,
+      rgb(255 255 255 / 76%) 0%,
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse at 15% 70%,
+      rgb(142 188 157 / 15%) 0%,
+      transparent 60%
+    );
+}
+
+/* SERVICES：円と斜めの面を組み合わせた幾何学模様 */
+[data-scene="services"] {
+  --scene-pattern:
+    radial-gradient(
+      circle at 95% 10%,
+      rgb(255 255 255 / 48%) 0%,
+      rgb(255 255 255 / 48%) 16%,
+      transparent 16.2%
+    ),
+    radial-gradient(
+      ellipse at 5% 95%,
+      rgb(174 151 219 / 15%) 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      145deg,
+      transparent 45%,
+      rgb(255 255 255 / 20%) 45%,
+      rgb(255 255 255 / 20%) 68%,
+      transparent 68%
+    );
+}
+
+/* PROJECTS：細かなドットを両端の淡い光に重ねる */
+[data-scene="projects"] {
+  --scene-pattern:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 55%) 28%,
+      rgb(255 255 255 / 55%) 72%,
+      transparent
+    ),
+    radial-gradient(
+      ellipse at 100% 0%,
+      rgb(255 255 255 / 78%),
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse at 0% 100%,
+      rgb(114 181 196 / 13%),
+      transparent 52%
+    ),
+    radial-gradient(
+      circle,
+      rgb(33 104 120 / 10%) 0.8px,
+      transparent 1px
+    );
+
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    22px 22px;
+
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+}
+
+/* CAREER：暖かな色の重なり。長いセクションでも密度を抑える */
+[data-scene="career"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at 100% 5%,
+      rgb(255 255 255 / 76%),
+      transparent 44%
+    ),
+    radial-gradient(
+      ellipse at -10% 46%,
+      rgb(202 167 111 / 13%),
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 100% 90%,
+      rgb(255 255 255 / 55%),
+      transparent 42%
+    ),
+    linear-gradient(
+      115deg,
+      transparent 62%,
+      rgb(255 255 255 / 16%) 62%,
+      transparent 88%
+    );
+}
+
+/* SKILLS：技術を連想させる薄いグリッド */
+[data-scene="skills"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgb(255 255 255 / 68%),
+      transparent 78%
+    ),
+    linear-gradient(
+      rgb(64 92 124 / 5%) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgb(64 92 124 / 5%) 1px,
+      transparent 1px
+    );
+
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+  background-repeat: no-repeat, repeat, repeat;
+}
+
+/* APPROACH：ローズと白の柔らかい光 */
+[data-scene="approach"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at 10% 10%,
+      rgb(255 255 255 / 80%),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 100% 95%,
+      rgb(211 159 179 / 17%),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 88% -25%,
+      transparent 50%,
+      rgb(255 255 255 / 30%) 50.2%,
+      rgb(255 255 255 / 30%) 66%,
+      transparent 66.2%
+    );
+}
+
+/* AVAILABILITY：次のつながりを表す、円と斜めの面 */
+[data-scene="availability"] {
+  --scene-pattern:
+    radial-gradient(
+      circle at 0% 100%,
+      rgb(255 255 255 / 42%) 0%,
+      rgb(255 255 255 / 42%) 24%,
+      transparent 24.2%
+    ),
+    radial-gradient(
+      ellipse at 100% 0%,
+      rgb(255 255 255 / 72%),
+      transparent 60%
+    ),
+    linear-gradient(
+      130deg,
+      transparent 48%,
+      rgb(110 175 145 / 9%) 48%,
+      rgb(110 175 145 / 9%) 70%,
+      transparent 70%
+    );
+}
+
+@media (max-width: 700px) {
+  /*
+   * スマートフォンでは模様を少し細かくし、
+   * 長い背景でも単調にならない密度に調整。
+   */
+  [data-scene="projects"] {
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      18px 18px;
+  }
+
+  [data-scene="skills"] {
+    background-size: 100% 100%, 30px 30px, 30px 30px;
+  }
+}
+
+/* abstract-scene-backgrounds:end */
