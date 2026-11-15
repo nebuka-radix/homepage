@@ -1241,3 +1241,62 @@ h3,
 }
 
 /* profile-photo:end */
+
+/* compact-section-spacing:start */
+
+:root {
+  --section-space-y: 48px;
+  --section-heading-gap: 24px;
+  --section-summary-space: 24px;
+}
+
+/* 各シーンの上下余白を統一 */
+.scene-section,
+.scene-section.approach-section {
+  padding-block: var(--section-space-y);
+}
+
+/* ヒーローの内側に余白を重ねない */
+.scene-section .hero {
+  padding-block: 0;
+}
+
+/* 見出しからコンテンツまで */
+.scene-section .section-heading {
+  margin-bottom: var(--section-heading-gap);
+}
+
+/* 経歴セクションの導入文の下 */
+.scene-section .career-introduction {
+  margin-bottom: var(--section-summary-space);
+}
+
+/* ヒーローと自己紹介の間のサマリー */
+.highlight-grid {
+  margin-top: 20px;
+  margin-bottom: 24px;
+}
+
+/* フッターも少しコンパクトに */
+.footer-inner {
+  padding-block: 28px;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --section-space-y: 36px;
+    --section-heading-gap: 20px;
+    --section-summary-space: 20px;
+  }
+
+  .highlight-grid {
+    margin-top: 16px;
+    margin-bottom: 20px;
+  }
+
+  .footer-inner {
+    padding-block: 24px;
+  }
+}
+
+/* compact-section-spacing:end */
