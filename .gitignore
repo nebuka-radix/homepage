@@ -30,3 +30,8 @@ pnpm-debug.log*
 *.swo
 
 gemini-scripts/
+# Generated portfolio output
+/src/generated/portfolio.json
+/src/generated/portfolio-entries.mjs
+/public/portfolio-assets/
+/portfolio/items/

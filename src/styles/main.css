@@ -2186,3 +2186,131 @@ h3,
     padding: 36px 20px;
   }
 }
+
+
+/* latex-portfolio-content */
+
+.portfolio-page-title {
+  margin: 0 0 18px;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.4;
+  letter-spacing: -0.04em;
+}
+
+.portfolio-thumbnail-link {
+  display: block;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.portfolio-thumbnail {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.portfolio-tags {
+  margin-bottom: 18px;
+}
+
+.portfolio-work-title {
+  font-size: 21px;
+  line-height: 1.5;
+}
+
+.portfolio-work-title a {
+  text-decoration: none;
+}
+
+.portfolio-work-title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.portfolio-back {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: var(--scene-accent);
+  font-size: 13px;
+  text-underline-offset: 4px;
+}
+
+.portfolio-detail-links {
+  margin-bottom: 28px;
+  padding-top: 0;
+}
+
+.portfolio-cover,
+.portfolio-body {
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+.portfolio-cover {
+  margin-bottom: 36px;
+}
+
+.portfolio-cover img,
+.portfolio-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  border: 1px solid var(--scene-border);
+  border-radius: 12px;
+}
+
+.portfolio-body {
+  padding: clamp(22px, 4vw, 44px);
+  margin-bottom: 32px;
+  border: 1px solid var(--scene-border);
+  border-radius: 18px;
+  background: #fff;
+}
+
+.portfolio-body h2 {
+  margin: 32px 0 16px;
+  font-size: 25px;
+  line-height: 1.45;
+}
+
+.portfolio-body h3 {
+  margin: 24px 0 12px;
+  font-size: 19px;
+}
+
+.portfolio-body > :first-child {
+  margin-top: 0;
+}
+
+.portfolio-body p {
+  margin-block: 14px;
+  color: #536178;
+  font-size: 14px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.portfolio-body figure {
+  margin: 26px 0;
+}
+
+.portfolio-body figcaption {
+  margin-top: 10px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .portfolio-body h2 {
+    font-size: 22px;
+  }
+
+  .portfolio-body p {
+    font-size: 13px;
+  }
+}

@@ -1,3 +1,4 @@
+import portfolioEntries from './src/generated/portfolio-entries.mjs'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -10,6 +11,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
+        ...portfolioEntries,
         home: entry('./index.html'),
         about: entry('./about/index.html'),
         services: entry('./services/index.html'),

@@ -10,7 +10,10 @@
     "dev": "vite",
     "typecheck": "vue-tsc --noEmit",
     "build": "npm run typecheck && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "portfolio:generate": "node scripts/build-portfolio.mjs",
+    "predev": "npm run portfolio:generate",
+    "prebuild": "npm run portfolio:generate"
   },
   "dependencies": {
     "gsap": "^3.15.1",
