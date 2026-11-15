@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSceneColors } from './composables/useSceneColors'
 import { usePageAnimations } from './composables/usePageAnimations'
 const year = new Date().getFullYear()
 const baseUrl = import.meta.env.BASE_URL
@@ -176,6 +177,8 @@ const principles = [
 ]
 
 usePageAnimations()
+
+useSceneColors()
 </script>
 
 <template>
@@ -198,7 +201,8 @@ usePageAnimations()
     </header>
 
     <v-main id="main-content" tabindex="-1">
-      <section class="hero page-width" aria-labelledby="hero-title">
+      <section class="scene-section" aria-labelledby="hero-title" data-scene="hero">
+        <div class="page-width hero">
         <div class="hero-copy">
           <p class="eyebrow">FREELANCE SOFTWARE ENGINEER / TOKYO</p>
           <h1 id="hero-title">
@@ -237,6 +241,8 @@ usePageAnimations()
           </div>
           <div class="art-label">Built for the real world.</div>
         </div>
+      
+        </div>
       </section>
 
       <div class="page-width highlight-grid" aria-label="経験と対応領域">
@@ -246,7 +252,7 @@ usePageAnimations()
         </div>
       </div>
 
-      <section id="about" class="about-section section-anchor" aria-labelledby="about-title">
+      <section id="about" class="about-section section-anchor scene-section" aria-labelledby="about-title" data-scene="about">
         <div class="page-width about-layout">
           <div>
             <p class="eyebrow">ABOUT</p>
@@ -275,7 +281,8 @@ usePageAnimations()
         </div>
       </section>
 
-      <section id="services" class="page-width section-block section-anchor" aria-labelledby="services-title">
+      <section id="services" class="section-anchor scene-section" aria-labelledby="services-title" data-scene="services">
+        <div class="page-width">
         <div class="section-heading">
           <div>
             <p class="eyebrow">WHAT I DO</p>
@@ -293,9 +300,11 @@ usePageAnimations()
             </ul>
           </v-card>
         </div>
+      
+        </div>
       </section>
 
-      <section id="projects" class="projects-section section-anchor" aria-labelledby="projects-title">
+      <section id="projects" class="projects-section section-anchor scene-section" aria-labelledby="projects-title" data-scene="projects">
         <div class="page-width">
           <div class="section-heading">
             <div>
@@ -329,7 +338,8 @@ usePageAnimations()
         </div>
       </section>
 
-      <section class="page-width section-block" aria-labelledby="career-title">
+      <section class="scene-section" aria-labelledby="career-title" data-scene="career">
+        <div class="page-width">
         <div class="section-heading">
           <div>
             <p class="eyebrow">CAREER</p>
@@ -345,9 +355,11 @@ usePageAnimations()
             </div>
           </li>
         </ol>
+      
+        </div>
       </section>
 
-      <section class="technology-section" aria-labelledby="skills-title">
+      <section class="technology-section scene-section" aria-labelledby="skills-title" data-scene="skills">
         <div class="page-width">
           <div class="section-heading">
             <div>
@@ -370,7 +382,8 @@ usePageAnimations()
         </div>
       </section>
 
-      <section class="page-width section-block" aria-labelledby="approach-title">
+      <section class="scene-section" aria-labelledby="approach-title" data-scene="approach">
+        <div class="page-width">
         <div class="section-heading">
           <div>
             <p class="eyebrow">MY APPROACH</p>
@@ -384,9 +397,11 @@ usePageAnimations()
             <p>{{ item.description }}</p>
           </article>
         </div>
+      
+        </div>
       </section>
 
-      <section id="availability" class="availability-section section-anchor" aria-labelledby="availability-title">
+      <section id="availability" class="availability-section section-anchor scene-section" aria-labelledby="availability-title" data-scene="availability">
         <div class="page-width availability-layout">
           <div>
             <p class="eyebrow">AVAILABILITY</p>
