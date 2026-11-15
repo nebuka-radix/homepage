@@ -1300,3 +1300,592 @@ h3,
 }
 
 /* compact-section-spacing:end */
+
+/* mobile-presentation:start */
+
+.mobile-reading-progress {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .mobile-reading-progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 2000;
+    display: block;
+    height: 3px;
+    pointer-events: none;
+  }
+
+  .mobile-reading-progress > span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #3554c7, #9c66d2, #328b79);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .page-width {
+    width: calc(100% - 36px);
+  }
+
+  .header-inner {
+    gap: 8px;
+    min-height: 0;
+    padding-block: 18px 10px;
+  }
+
+  .header-inner .brand {
+    font-size: 18px;
+    letter-spacing: 0.065em;
+  }
+
+  .brand-mark {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+  }
+
+  .navigation {
+    gap: 4px;
+  }
+
+  .navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+
+  /* スマートフォンではテーマの違いを明確に */
+  [data-scene="hero"] {
+    --scene-bg: #e5edff;
+    --scene-entry: #f5f8ff;
+  }
+
+  [data-scene="about"] {
+    --scene-bg: #e3f0e6;
+  }
+
+  [data-scene="services"] {
+    --scene-bg: #eae2fa;
+  }
+
+  [data-scene="projects"] {
+    --scene-bg: #dff0f5;
+  }
+
+  [data-scene="career"] {
+    --scene-bg: #f4e8d6;
+  }
+
+  [data-scene="skills"] {
+    --scene-bg: #e0e9f5;
+  }
+
+  [data-scene="approach"] {
+    --scene-bg: #f7e2e9;
+  }
+
+  [data-scene="availability"] {
+    --scene-bg: #dcefe5;
+  }
+
+  /* 写真 → キャッチコピーの順で見せる */
+  [data-scene="hero"] {
+    padding-top: 22px;
+  }
+
+  .scene-section .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 26px;
+  }
+
+  .hero-copy {
+    order: 2;
+  }
+
+  .hero-art.portrait-area {
+    order: 1;
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0 0 16px;
+  }
+
+  .portrait-area .portrait-frame {
+    width: 100%;
+    max-height: 260px;
+    aspect-ratio: 16 / 10;
+    border-width: 4px;
+    border-radius: 24px;
+    box-shadow: 0 16px 35px #233d8018;
+  }
+
+  .portrait-area .profile-photo {
+    object-position: center 35%;
+  }
+
+  .portrait-area .portrait-backdrop {
+    inset: 8px 6px 8px auto;
+    width: calc(100% - 16px);
+    height: auto;
+    aspect-ratio: auto;
+    border-radius: 24px;
+    transform: rotate(2deg);
+  }
+
+  .portrait-area .portrait-label {
+    right: 12px;
+    bottom: 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px #233d8010;
+  }
+
+  .portrait-label-name {
+    font-size: 11px;
+  }
+
+  .portrait-label > span:last-child {
+    font-size: 9px;
+  }
+
+  .portrait-fallback {
+    gap: 12px;
+  }
+
+  .portrait-fallback > span {
+    font-size: 64px;
+  }
+
+  .hero .eyebrow {
+    margin-bottom: 14px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .hero h1 {
+    margin: 0;
+    font-size: clamp(30px, 8.4vw, 46px);
+    line-height: 1.35;
+    letter-spacing: -0.055em;
+  }
+
+  .hero-description {
+    margin-top: 20px;
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    margin-top: 22px;
+  }
+
+  .hero-actions .primary-link {
+    width: 100%;
+    min-height: 54px;
+    padding-inline: 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 22px #3554c722;
+    font-weight: 600;
+  }
+
+  .hero-actions .secondary-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    text-underline-offset: 4px;
+  }
+
+  .hero-signature {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--scene-border);
+  }
+
+  /* 数字を視線の起点に */
+  .highlight-grid {
+    border-radius: 18px;
+  }
+
+  .highlight-item {
+    gap: 6px;
+    padding: 20px 14px;
+  }
+
+  .highlight-value {
+    font-size: 26px;
+    letter-spacing: -0.04em;
+  }
+
+  .highlight-label {
+    font-size: 10px;
+  }
+
+  /* セクションの見出しに短いカラールール */
+  .scene-section .section-heading {
+    position: relative;
+    padding-bottom: 18px;
+  }
+
+  .scene-section .section-heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 72px;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--scene-accent);
+    transform: scaleX(var(--mobile-rule, 1));
+    transform-origin: left center;
+  }
+
+  .scene-section h2 {
+    font-size: clamp(24px, 6.5vw, 30px);
+    line-height: 1.45;
+  }
+
+  .scene-section .section-caption {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  /* サービスカード */
+  .scene-section .service-card {
+    position: relative;
+    padding: 26px 22px;
+    border-radius: 20px !important;
+    border-top: 3px solid var(--scene-accent);
+  }
+
+  .service-card .card-number {
+    margin-bottom: 14px;
+    font-size: 32px;
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .service-card h3 {
+    font-size: 19px;
+  }
+
+  .service-description {
+    margin-block: 14px 20px;
+  }
+
+  /* 案件はメタ情報と本文の区切りを強調 */
+  .scene-section .project-card {
+    padding: 24px 20px;
+    border-radius: 20px !important;
+  }
+
+  .project-meta {
+    padding-left: 12px;
+    border-left: 3px solid var(--scene-accent);
+  }
+
+  .project-body h3 {
+    font-size: 19px;
+  }
+
+  .scene-section .tag-list {
+    gap: 6px;
+  }
+
+  .scene-section .tag-list li {
+    padding: 6px 9px;
+    font-size: 10px;
+  }
+
+  .timeline-card {
+    box-shadow: 0 10px 24px #523a1708;
+  }
+
+  .timeline-date time {
+    font-size: 14px;
+  }
+
+  .skill-group {
+    padding: 20px;
+    border: 1px solid var(--scene-border);
+    border-radius: 18px;
+    background: #ffffffb8;
+  }
+
+  .skills-grid {
+    gap: 14px;
+  }
+
+  .principle {
+    padding-block: 22px;
+  }
+
+  .principle-number {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .scene-section .availability-details {
+    border-top: 3px solid var(--scene-accent);
+    box-shadow: 0 12px 28px #286c5708;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero h1 {
+    font-size: 29px;
+  }
+
+  .portrait-area .portrait-frame {
+    aspect-ratio: 16 / 11;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-reading-progress {
+    display: none;
+  }
+}
+
+/* mobile-presentation:end */
+
+/* abstract-scene-backgrounds:start */
+
+/*
+ * GSAPが変更するbackground-colorとは分離して描画。
+ * backgroundの一括指定は使わず、既存の背景色を保持する。
+ */
+.scene-section {
+  background-image: var(--scene-pattern, none);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+/* HERO：右上の光と、左下から広がる淡いブルー */
+[data-scene="hero"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at 90% 12%,
+      rgb(255 255 255 / 90%) 0%,
+      rgb(255 255 255 / 35%) 25%,
+      transparent 56%
+    ),
+    radial-gradient(
+      ellipse at 3% 95%,
+      rgb(152 176 245 / 22%) 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      125deg,
+      transparent 58%,
+      rgb(255 255 255 / 28%) 58%,
+      rgb(255 255 255 / 8%) 83%,
+      transparent 83%
+    );
+}
+
+/* ABOUT：大きな曲線と、セージグリーンのにじみ */
+[data-scene="about"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at -12% 110%,
+      transparent 0%,
+      transparent 44%,
+      rgb(255 255 255 / 42%) 44.2%,
+      rgb(255 255 255 / 42%) 55%,
+      transparent 55.2%
+    ),
+    radial-gradient(
+      ellipse at 95% 5%,
+      rgb(255 255 255 / 76%) 0%,
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse at 15% 70%,
+      rgb(142 188 157 / 15%) 0%,
+      transparent 60%
+    );
+}
+
+/* SERVICES：円と斜めの面を組み合わせた幾何学模様 */
+[data-scene="services"] {
+  --scene-pattern:
+    radial-gradient(
+      circle at 95% 10%,
+      rgb(255 255 255 / 48%) 0%,
+      rgb(255 255 255 / 48%) 16%,
+      transparent 16.2%
+    ),
+    radial-gradient(
+      ellipse at 5% 95%,
+      rgb(174 151 219 / 15%) 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      145deg,
+      transparent 45%,
+      rgb(255 255 255 / 20%) 45%,
+      rgb(255 255 255 / 20%) 68%,
+      transparent 68%
+    );
+}
+
+/* PROJECTS：細かなドットを両端の淡い光に重ねる */
+[data-scene="projects"] {
+  --scene-pattern:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 55%) 28%,
+      rgb(255 255 255 / 55%) 72%,
+      transparent
+    ),
+    radial-gradient(
+      ellipse at 100% 0%,
+      rgb(255 255 255 / 78%),
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse at 0% 100%,
+      rgb(114 181 196 / 13%),
+      transparent 52%
+    ),
+    radial-gradient(
+      circle,
+      rgb(33 104 120 / 10%) 0.8px,
+      transparent 1px
+    );
+
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    22px 22px;
+
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+}
+
+/* CAREER：暖かな色の重なり。長いセクションでも密度を抑える */
+[data-scene="career"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at 100% 5%,
+      rgb(255 255 255 / 76%),
+      transparent 44%
+    ),
+    radial-gradient(
+      ellipse at -10% 46%,
+      rgb(202 167 111 / 13%),
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 100% 90%,
+      rgb(255 255 255 / 55%),
+      transparent 42%
+    ),
+    linear-gradient(
+      115deg,
+      transparent 62%,
+      rgb(255 255 255 / 16%) 62%,
+      transparent 88%
+    );
+}
+
+/* SKILLS：技術を連想させる薄いグリッド */
+[data-scene="skills"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgb(255 255 255 / 68%),
+      transparent 78%
+    ),
+    linear-gradient(
+      rgb(64 92 124 / 5%) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgb(64 92 124 / 5%) 1px,
+      transparent 1px
+    );
+
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+  background-repeat: no-repeat, repeat, repeat;
+}
+
+/* APPROACH：ローズと白の柔らかい光 */
+[data-scene="approach"] {
+  --scene-pattern:
+    radial-gradient(
+      ellipse at 10% 10%,
+      rgb(255 255 255 / 80%),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 100% 95%,
+      rgb(211 159 179 / 17%),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 88% -25%,
+      transparent 50%,
+      rgb(255 255 255 / 30%) 50.2%,
+      rgb(255 255 255 / 30%) 66%,
+      transparent 66.2%
+    );
+}
+
+/* AVAILABILITY：次のつながりを表す、円と斜めの面 */
+[data-scene="availability"] {
+  --scene-pattern:
+    radial-gradient(
+      circle at 0% 100%,
+      rgb(255 255 255 / 42%) 0%,
+      rgb(255 255 255 / 42%) 24%,
+      transparent 24.2%
+    ),
+    radial-gradient(
+      ellipse at 100% 0%,
+      rgb(255 255 255 / 72%),
+      transparent 60%
+    ),
+    linear-gradient(
+      130deg,
+      transparent 48%,
+      rgb(110 175 145 / 9%) 48%,
+      rgb(110 175 145 / 9%) 70%,
+      transparent 70%
+    );
+}
+
+@media (max-width: 700px) {
+  /*
+   * スマートフォンでは模様を少し細かくし、
+   * 長い背景でも単調にならない密度に調整。
+   */
+  [data-scene="projects"] {
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      18px 18px;
+  }
+
+  [data-scene="skills"] {
+    background-size: 100% 100%, 30px 30px, 30px 30px;
+  }
+}
+
+/* abstract-scene-backgrounds:end */

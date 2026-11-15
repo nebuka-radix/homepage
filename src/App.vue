@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMobilePresentation } from './composables/useMobilePresentation'
 import { ref as createPhotoRef } from 'vue'
 import { useSceneColors } from './composables/useSceneColors'
 import { usePageAnimations } from './composables/usePageAnimations'
@@ -269,10 +270,15 @@ useSceneColors()
 
 const profilePhotoFailed = createPhotoRef(false)
 const profilePhotoUrl = `${import.meta.env.BASE_URL}images/profile.jpg`
+
+useMobilePresentation()
 </script>
 
 <template>
   <v-app>
+    <div class="mobile-reading-progress" aria-hidden="true">
+      <span data-mobile-progress></span>
+    </div>
     <a class="skip-link" href="#main-content">メインコンテンツへ</a>
 
     <header class="site-header">
