@@ -1093,3 +1093,27 @@ h3,
 }
 
 /* compact-line-height:end */
+ 
+/* site-brand-name:start */
+
+.brand {
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: 0.045em;
+}
+
+.footer-brand {
+  font-size: 19px;
+}
+
+@media (max-width: 700px) {
+  .brand {
+    font-size: 19px;
+  }
+
+  .footer-brand {
+    font-size: 18px;
+  }
+}
+
+/* site-brand-name:end */

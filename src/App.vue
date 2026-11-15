@@ -273,9 +273,9 @@ useSceneColors()
 
     <header class="site-header">
       <div class="page-width header-inner">
-        <a class="brand" :href="baseUrl" aria-label="radix-studio ホーム">
+        <a class="brand" :href="baseUrl" aria-label="NEBUKA KEITA ホーム">
           <span class="brand-mark" aria-hidden="true"></span>
-          radix-studio<span class="brand-dot">.</span>
+          NEBUKA KEITA
         </a>
         <nav class="navigation" aria-label="メインナビゲーション">
           <a href="#about">About</a>
@@ -308,7 +308,7 @@ useSceneColors()
           </div>
           <div class="hero-signature">
             <span class="signature-name">根深 渓太 / Nebuka Keita</span>
-            <span>フリーランスエンジニア / radix-studio</span>
+            <span>フリーランスエンジニア</span>
           </div>
         </div>
 
@@ -556,10 +556,10 @@ useSceneColors()
     <footer class="site-footer">
       <div class="page-width footer-inner">
         <div>
-          <a class="brand footer-brand" :href="baseUrl">radix-studio.</a>
+          <a class="brand footer-brand" :href="baseUrl">NEBUKA KEITA</a>
           <p>根深 渓太 / Nebuka Keita — Freelance Software Engineer</p>
         </div>
-        <small>© {{ year }} radix-studio</small>
+        <small>© {{ year }} NEBUKA KEITA</small>
       </div>
     </footer>
   </v-app>
