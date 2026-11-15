@@ -770,3 +770,533 @@ h3 { font-size: 18px; line-height: 1.7; letter-spacing: -0.03em; }
     border-radius: 16px;
   }
 }
+
+/* detailed-career-timeline */
+
+.career-introduction {
+  max-width: 740px;
+  margin-bottom: 44px;
+  color: #536178;
+  font-size: 14px;
+  line-height: 2;
+}
+
+.career-timeline {
+  position: relative;
+  display: grid;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 縦線はアニメーションする各カードから独立させる */
+.career-timeline::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 24px;
+  left: 173px;
+  width: 2px;
+  background: var(--scene-border);
+}
+
+.career-timeline .timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+  padding: 0;
+  border: 0;
+}
+
+.career-timeline .timeline-item:last-child {
+  border: 0;
+}
+
+/* 時系列を示すノード */
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 167px;
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--scene-bg);
+  border-radius: 50%;
+  background: var(--scene-accent);
+  box-shadow: 0 0 0 1px var(--scene-accent);
+}
+
+.timeline-date {
+  padding-top: 5px;
+}
+
+.timeline-date time {
+  display: block;
+  color: var(--scene-accent);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.8;
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-date > span {
+  display: block;
+  margin-top: 8px;
+  color: #6a6257;
+  font-size: 9px;
+  line-height: 1.9;
+  letter-spacing: 0.09em;
+  overflow-wrap: anywhere;
+}
+
+.timeline-card {
+  min-width: 0;
+  padding: 30px;
+  border: 1px solid var(--scene-border);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 12px 32px #523a1705;
+}
+
+.timeline-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-bottom: 18px;
+}
+
+.career-timeline .timeline-organization {
+  margin: 0;
+  color: #647084;
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.timeline-role {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: var(--scene-soft);
+  color: var(--scene-accent);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.timeline-card h3 {
+  font-size: 20px;
+  line-height: 1.7;
+  letter-spacing: -0.035em;
+}
+
+.career-timeline .timeline-summary {
+  margin: 16px 0 24px;
+  color: #536178;
+  font-size: 14px;
+  line-height: 2;
+}
+
+.timeline-detail-title {
+  margin-bottom: 10px;
+  color: var(--scene-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.timeline-details {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-left: 19px;
+  color: #536178;
+  font-size: 13px;
+  line-height: 1.95;
+}
+
+.timeline-details li::marker {
+  color: var(--scene-accent);
+}
+
+.career-timeline .timeline-note {
+  margin: 22px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--scene-border);
+  color: var(--scene-accent);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* 現在の活動を最後の到達点として少し強調 */
+.timeline-item:last-child .timeline-card {
+  border-color: var(--scene-accent);
+}
+
+@media (max-width: 960px) {
+  .career-timeline .timeline-item {
+    grid-template-columns: 130px minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .career-timeline::before {
+    left: 149px;
+  }
+
+  .timeline-item::before {
+    left: 143px;
+  }
+
+  .timeline-card {
+    padding: 26px;
+  }
+}
+
+@media (max-width: 700px) {
+  .career-introduction {
+    margin-bottom: 32px;
+    font-size: 13px;
+  }
+
+  .career-timeline {
+    gap: 30px;
+  }
+
+  .career-timeline::before {
+    left: 7px;
+    top: 13px;
+  }
+
+  .career-timeline .timeline-item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    padding-left: 32px;
+  }
+
+  .timeline-item::before {
+    top: 9px;
+    left: 1px;
+  }
+
+  .timeline-date {
+    padding-top: 2px;
+  }
+
+  .timeline-date > span {
+    margin-top: 3px;
+    font-size: 9px;
+  }
+
+  .timeline-card {
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .timeline-card-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .timeline-card h3 {
+    font-size: 18px;
+  }
+
+  .career-timeline .timeline-summary {
+    font-size: 13px;
+  }
+
+  .timeline-details {
+    font-size: 12px;
+  }
+
+  .career-timeline .timeline-note {
+    font-size: 11px;
+  }
+}
+
+/* compact-line-height:start */
+
+:root {
+  --line-height-hero: 1.4;
+  --line-height-heading: 1.45;
+  --line-height-card-heading: 1.5;
+  --line-height-body: 1.75;
+  --line-height-list: 1.65;
+  --line-height-caption: 1.6;
+}
+
+.v-application {
+  line-height: var(--line-height-body);
+}
+
+/* 見出し */
+h1 {
+  line-height: var(--line-height-hero);
+}
+
+h2 {
+  line-height: var(--line-height-heading);
+}
+
+h3,
+.timeline-card h3,
+.project-body h3,
+.content-placeholder h2 {
+  line-height: var(--line-height-card-heading);
+}
+
+/* 本文：既存の詳細セレクターも上書き */
+.hero-description,
+.intro-description,
+.about-copy p,
+.service-description,
+.project-summary,
+.principle p,
+.career-introduction,
+.career-item p,
+.career-timeline .timeline-summary,
+.skills-note,
+.availability-description,
+.content-placeholder > p:last-child {
+  line-height: var(--line-height-body);
+}
+
+/* 箇条書き */
+.project-details,
+.timeline-details,
+.profile-facts {
+  line-height: var(--line-height-list);
+}
+
+/* 補足・ラベル */
+.eyebrow,
+.highlight-label,
+.project-period,
+.project-role,
+.project-note,
+.timeline-date time,
+.timeline-date > span,
+.timeline-role,
+.timeline-detail-title,
+.career-timeline .timeline-organization,
+.career-timeline .timeline-note,
+.availability-details dt,
+.scene-section .availability-details dd,
+.footer-inner p {
+  line-height: var(--line-height-caption);
+}
+
+/* compact-line-height:end */
+ 
+/* site-brand-name:start */
+
+.brand {
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: 0.045em;
+}
+
+.footer-brand {
+  font-size: 19px;
+}
+
+@media (max-width: 700px) {
+  .brand {
+    font-size: 19px;
+  }
+
+  .footer-brand {
+    font-size: 18px;
+  }
+}
+
+/* site-brand-name:end */
+
+/* profile-photo:start */
+
+.hero-art.portrait-area {
+  width: 100%;
+  min-width: 0;
+  min-height: 440px;
+  padding: 16px 12px 36px;
+  transform: none;
+}
+
+.portrait-area .portrait-frame {
+  position: relative;
+  width: min(100%, 320px);
+  height: auto;
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 6px solid #fff;
+  border-radius: 28px;
+  background: #e2e9f7;
+  box-shadow: 0 24px 60px #233d8018;
+  transform: none;
+}
+
+.profile-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  /* 顔の位置に合わせて縦方向の値を調整 */
+  object-position: center 35%;
+}
+
+.portrait-area .portrait-backdrop {
+  position: absolute;
+  width: min(78%, 300px);
+  height: auto;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--scene-border, #d5e0f7);
+  border-radius: 28px;
+  background: var(--scene-soft, #dfe8ff);
+  transform: translate(16px, 0) rotate(7deg);
+}
+
+.portrait-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #edf3ff, #dce5fa);
+  color: #3554c7;
+}
+
+.portrait-fallback > span {
+  font-size: 72px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.portrait-fallback > small {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.portrait-area .portrait-label {
+  right: 0;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 100%;
+  padding: 16px 20px;
+  border-radius: 14px;
+  line-height: 1.6;
+}
+
+.portrait-label-name {
+  color: #19263d;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.portrait-label > span:last-child {
+  color: #64748b;
+  font-size: 10px;
+}
+
+@media (max-width: 960px) {
+  .hero-art.portrait-area {
+    min-height: 370px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-art.portrait-area {
+    width: min(100%, 370px);
+    min-height: 0;
+    margin: 30px auto 0;
+    padding-bottom: 42px;
+  }
+
+  .portrait-area .portrait-frame {
+    width: min(86%, 280px);
+  }
+
+  .portrait-area .portrait-backdrop {
+    width: min(76%, 260px);
+  }
+
+  .portrait-area .portrait-label {
+    right: 0;
+    bottom: 12px;
+  }
+}
+
+/* profile-photo:end */
+
+/* compact-section-spacing:start */
+
+:root {
+  --section-space-y: 48px;
+  --section-heading-gap: 24px;
+  --section-summary-space: 24px;
+}
+
+/* 各シーンの上下余白を統一 */
+.scene-section,
+.scene-section.approach-section {
+  padding-block: var(--section-space-y);
+}
+
+/* ヒーローの内側に余白を重ねない */
+.scene-section .hero {
+  padding-block: 0;
+}
+
+/* 見出しからコンテンツまで */
+.scene-section .section-heading {
+  margin-bottom: var(--section-heading-gap);
+}
+
+/* 経歴セクションの導入文の下 */
+.scene-section .career-introduction {
+  margin-bottom: var(--section-summary-space);
+}
+
+/* ヒーローと自己紹介の間のサマリー */
+.highlight-grid {
+  margin-top: 20px;
+  margin-bottom: 24px;
+}
+
+/* フッターも少しコンパクトに */
+.footer-inner {
+  padding-block: 28px;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --section-space-y: 36px;
+    --section-heading-gap: 20px;
+    --section-summary-space: 20px;
+  }
+
+  .highlight-grid {
+    margin-top: 16px;
+    margin-bottom: 20px;
+  }
+
+  .footer-inner {
+    padding-block: 24px;
+  }
+}
+
+/* compact-section-spacing:end */

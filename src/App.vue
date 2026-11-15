@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref as createPhotoRef } from 'vue'
 import { useSceneColors } from './composables/useSceneColors'
 import { usePageAnimations } from './composables/usePageAnimations'
 const year = new Date().getFullYear()
@@ -117,22 +118,108 @@ const projects = [
 
 const career = [
   {
-    period: '2005 — 2014',
-    title: '通信機器メーカ / 生産技術',
-    description:
-      '通信機器の量産ライン構築、自動試験システム、製造品質管理に従事。',
+    start: '2005-04',
+    period: '2005.04 — 2014.03',
+    phase: 'MANUFACTURING',
+    title: '通信機器の量産を支える、生産技術からスタート',
+    organization: '通信機器メーカ / 正社員',
+    role: 'SE・生産技術',
+    summary:
+      'FOMA・LTE系の通信端末や基地局装置の量産ライン立上げを担当。製品を安定して生産するための工程と、自動試験システムを構築しました。',
+    responsibilities: [
+      'QC工程図、タクト設計、試験仕様、動線などの工程設計',
+      'VB.NET・VBAと計測器制御を組み合わせた自動試験システムの構築',
+      'RHEL・MySQL・Sambaによる試験データ管理基盤の構築・運用',
+      '工程能力の管理と、製造部門との実工数に基づく調整',
+    ],
+    tags: ['VB.NET', 'VBA', 'MySQL', '計測器制御', '製造品質管理'],
+    note: '社長賞1級を受賞',
   },
   {
-    period: '2014 — 2022',
-    title: '製鉄関連エンジニアリング会社 / PL',
-    description:
-      '製鉄所向け計測システムの提案・開発・現地立上げと、新技術の研究開発を担当。',
+    start: '2014-04',
+    period: '2014.04 — 2022.03',
+    phase: 'MEASUREMENT & LEADERSHIP',
+    title: '製鉄所の計測システムを、提案から現地立上げまで',
+    organization: '製鉄関連エンジニアリング会社 / 正社員',
+    role: 'PL / 3〜7名',
+    summary:
+      '製鉄所向けに、PLCと温度計・ガス計・水分計などを用いた計測システムを開発。提案型の技術営業と、プロジェクトの推進を担いました。',
+    responsibilities: [
+      '提案・見積り、案件実行計画、予算管理から設計・製作・テストまで担当',
+      '50ms周期のWindowsリアルタイム処理やPLC・センサとの通信を実装',
+      '現地立上げに加え、施工計画・安全管理にも対応',
+      '新型計測機器の研究開発、海外OEM先との英語対応・会議通訳を担当',
+    ],
+    tags: ['VB.NET', 'PLC / MELSEC', 'TCP / UDP', 'MODBUS', '技術営業'],
+    note: '開発だけでなく、現場導入とチーム推進へ担当領域を拡大',
   },
   {
-    period: '2022 —',
-    title: 'フリーランス / radix-studio',
-    description:
-      '業務システムの再構築、製造系ソフト開発、テスト自動化、GASアプリ開発、AI活用推進に従事。',
+    start: '2022-04',
+    period: '2022.04 — 2024.05',
+    phase: 'INDEPENDENT',
+    title: 'フリーランスとして、業務システムの再構築へ',
+    organization: 'フリーランス / システム開発会社への参画',
+    role: 'SE / 顧客折衝・設計・開発',
+    summary:
+      '不動産向け売上管理システムの再構築を担当。過去の議事録やバックログを読み解き、業務と仕様を整理するところから取り組みました。',
+    responsibilities: [
+      '過去2年分の議事録・バックログを確認し、必要な仕様を整理',
+      'Laravel・PHP版からVB.NET・MySQL版への再構築を設計・製作',
+      '顧客折衝、見積対応、仕様策定、レビュー、納入・立上げまで対応',
+      '業務フロー分析をもとにした提案営業・新規顧客開拓にも従事',
+    ],
+    tags: ['VB.NET', 'MySQL', 'Git', '業務分析', 'システム再構築'],
+    note: '',
+  },
+  {
+    start: '2024-06',
+    period: '2024.06 — 2024.12',
+    phase: 'TEST AUTOMATION',
+    title: '製造系Webシステムのテスト自動化',
+    organization: 'フリーランス / 自動車関連システム開発会社への参画',
+    role: 'SE / 設計・製作・テスト',
+    summary:
+      '製造系Webシステムのテスト自動化に従事。ブラウザー操作の自動化を含む技術を用い、テスト業務に取り組みました。',
+    responsibilities: [
+      '製造系Webシステムを対象としたテスト自動化',
+      'VBA・Python・Selenium・Playwright・Javaを用いた開発・テスト',
+    ],
+    tags: ['Python', 'Selenium', 'Playwright', 'VBA', 'Java'],
+    note: '',
+  },
+  {
+    start: '2025-01',
+    period: '2025.01 — 2025.05',
+    phase: 'MANUFACTURING SOFTWARE',
+    title: '製造系ソフトウェアの開発・テスト設計',
+    organization: 'フリーランス / システム開発会社への参画',
+    role: 'SE / 要件・設計・製作・テスト',
+    summary:
+      'VBとOracleを用いる製造系ソフトウェア開発に参画。Python・VBAも扱い、開発およびテスト設計を担当しました。',
+    responsibilities: [
+      '製造系ソフトウェアの要件・設計・製作・テスト工程に対応',
+      'VB・Oracleを中心とした開発とテスト設計',
+    ],
+    tags: ['VB', 'Oracle', 'Python', 'VBA', 'テスト設計'],
+    note: '',
+  },
+  {
+    start: '2025-06',
+    period: '2025.06 — 現在',
+    phase: 'BUSINESS SYSTEMS & AI',
+    title: '業務システム開発と、チームの開発生産性改善',
+    organization: 'フリーランス / 物流関連システム開発会社への参画',
+    role: 'SE・PL補佐',
+    summary:
+      '送り状発行システムの更新を担当しながら、GASによる社内アプリ開発、テスト記録の効率化、生成AIのチーム活用にも取り組んでいます。',
+    responsibilities: [
+      '既存仕様の解析、要件定義書・基本設計書などの作成、製作・テスト・レビュー対応',
+      'React・TypeScript・GASによる見積りシミュレータやフォルダ一括コピーツールの開発',
+      '画面コピー・DBダンプ・帳票PDFを扱うエビデンス記録ツール「omnicat」の開発',
+      'GitHub Copilot指示書の標準化と、Geminiによるパッチ適用手順の整備',
+    ],
+    tags: ['VB.NET', 'PostgreSQL', 'GAS / React', 'WPF', 'GitHub Copilot', 'Gemini'],
+    note: 'システム開発と並行して、開発チームの作業手順そのものを改善',
   },
 ]
 
@@ -179,6 +266,9 @@ const principles = [
 usePageAnimations()
 
 useSceneColors()
+
+const profilePhotoFailed = createPhotoRef(false)
+const profilePhotoUrl = `${import.meta.env.BASE_URL}images/profile.jpg`
 </script>
 
 <template>
@@ -187,9 +277,9 @@ useSceneColors()
 
     <header class="site-header">
       <div class="page-width header-inner">
-        <a class="brand" :href="baseUrl" aria-label="radix-studio ホーム">
+        <a class="brand" :href="baseUrl" aria-label="NEBUKA KEITA ホーム">
           <span class="brand-mark" aria-hidden="true"></span>
-          radix-studio<span class="brand-dot">.</span>
+          NEBUKA KEITA
         </a>
         <nav class="navigation" aria-label="メインナビゲーション">
           <a href="#about">About</a>
@@ -222,25 +312,44 @@ useSceneColors()
           </div>
           <div class="hero-signature">
             <span class="signature-name">根深 渓太 / Nebuka Keita</span>
-            <span>フリーランスエンジニア / radix-studio</span>
+            <span>フリーランスエンジニア</span>
           </div>
         </div>
 
-        <div class="hero-art" aria-hidden="true">
-          <div class="art-orbit orbit-one"></div>
-          <div class="art-orbit orbit-two"></div>
-          <div class="art-card art-card-back"></div>
-          <div class="art-card art-card-front">
-            <div class="art-dots"><i></i><i></i><i></i></div>
-            <div class="art-code">&lt;build /&gt;</div>
-            <div class="art-line line-long"></div>
-            <div class="art-line line-medium"></div>
-            <div class="art-line line-short"></div>
-            <div class="art-divider"></div>
-            <div class="art-caption">FIELD → DESIGN → DEVELOPMENT</div>
+        
+        <!-- profile-photo:start -->
+        <div class="hero-art portrait-area">
+          <div class="art-card-back portrait-backdrop" aria-hidden="true"></div>
+
+          <figure class="art-card-front portrait-frame">
+            <img
+              v-if="!profilePhotoFailed"
+              class="profile-photo"
+              :src="profilePhotoUrl"
+              alt="根深 渓太のプロフィール写真"
+              width="720"
+              height="900"
+              fetchpriority="high"
+              decoding="async"
+              @error="profilePhotoFailed = true"
+            />
+            <div
+              v-else
+              class="portrait-fallback"
+              role="img"
+              aria-label="NEBUKA KEITAのイニシャル"
+            >
+              <span>NK</span>
+              <small>NEBUKA KEITA</small>
+            </div>
+          </figure>
+
+          <div class="art-label portrait-label">
+            <span class="portrait-label-name">NEBUKA KEITA</span>
+            <span>Freelance Software Engineer</span>
           </div>
-          <div class="art-label">Built for the real world.</div>
         </div>
+        <!-- profile-photo:end -->
       
         </div>
       </section>
@@ -338,24 +447,62 @@ useSceneColors()
         </div>
       </section>
 
-      <section class="scene-section" aria-labelledby="career-title" data-scene="career">
+      <section
+        class="scene-section section-anchor"
+        aria-labelledby="career-title"
+        data-scene="career"
+      >
         <div class="page-width">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">CAREER</p>
-            <h2 id="career-title">これまでの歩み</h2>
-          </div>
-        </div>
-        <ol class="career-list">
-          <li v-for="item in career" :key="item.period" class="career-item">
-            <span class="career-period">{{ item.period }}</span>
+          <div class="section-heading">
             <div>
-              <h3>{{ item.title }}</h3>
-              <p>{{ item.description }}</p>
+              <p class="eyebrow">CAREER JOURNEY</p>
+              <h2 id="career-title">現場から広がった、これまでの歩み</h2>
             </div>
-          </li>
-        </ol>
-      
+            <p class="section-caption">
+              制御・計測から、業務システム、Web、AI活用へ。
+            </p>
+          </div>
+
+          <p class="career-introduction">
+            製造現場で培った「確実に動くものを届ける」という姿勢を土台に、
+            担当する技術と業務の領域を広げてきました。
+          </p>
+
+          <ol class="career-list career-timeline" aria-label="職務経歴のタイムライン">
+            <li
+              v-for="item in career"
+              :key="item.start"
+              class="career-item timeline-item"
+            >
+              <div class="timeline-date">
+                <time :datetime="item.start">{{ item.period }}</time>
+                <span>{{ item.phase }}</span>
+              </div>
+
+              <article class="timeline-card">
+                <div class="timeline-card-meta">
+                  <p class="timeline-organization">{{ item.organization }}</p>
+                  <span class="timeline-role">{{ item.role }}</span>
+                </div>
+
+                <h3>{{ item.title }}</h3>
+                <p class="timeline-summary">{{ item.summary }}</p>
+
+                <h4 class="timeline-detail-title">主な取り組み</h4>
+                <ul class="timeline-details">
+                  <li v-for="detail in item.responsibilities" :key="detail">
+                    {{ detail }}
+                  </li>
+                </ul>
+
+                <ul class="tag-list" aria-label="関連する技術と領域">
+                  <li v-for="tag in item.tags" :key="tag">{{ tag }}</li>
+                </ul>
+
+                <p v-if="item.note" class="timeline-note">{{ item.note }}</p>
+              </article>
+            </li>
+          </ol>
         </div>
       </section>
 
@@ -432,10 +579,10 @@ useSceneColors()
     <footer class="site-footer">
       <div class="page-width footer-inner">
         <div>
-          <a class="brand footer-brand" :href="baseUrl">radix-studio.</a>
+          <a class="brand footer-brand" :href="baseUrl">NEBUKA KEITA</a>
           <p>根深 渓太 / Nebuka Keita — Freelance Software Engineer</p>
         </div>
-        <small>© {{ year }} radix-studio</small>
+        <small>© {{ year }} NEBUKA KEITA</small>
       </div>
     </footer>
   </v-app>
