@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref as createPhotoRef } from 'vue'
 import { useSceneColors } from './composables/useSceneColors'
 import { usePageAnimations } from './composables/usePageAnimations'
 const year = new Date().getFullYear()
@@ -265,6 +266,9 @@ const principles = [
 usePageAnimations()
 
 useSceneColors()
+
+const profilePhotoFailed = createPhotoRef(false)
+const profilePhotoUrl = `${import.meta.env.BASE_URL}images/profile.jpg`
 </script>
 
 <template>
@@ -312,21 +316,40 @@ useSceneColors()
           </div>
         </div>
 
-        <div class="hero-art" aria-hidden="true">
-          <div class="art-orbit orbit-one"></div>
-          <div class="art-orbit orbit-two"></div>
-          <div class="art-card art-card-back"></div>
-          <div class="art-card art-card-front">
-            <div class="art-dots"><i></i><i></i><i></i></div>
-            <div class="art-code">&lt;build /&gt;</div>
-            <div class="art-line line-long"></div>
-            <div class="art-line line-medium"></div>
-            <div class="art-line line-short"></div>
-            <div class="art-divider"></div>
-            <div class="art-caption">FIELD → DESIGN → DEVELOPMENT</div>
+        
+        <!-- profile-photo:start -->
+        <div class="hero-art portrait-area">
+          <div class="art-card-back portrait-backdrop" aria-hidden="true"></div>
+
+          <figure class="art-card-front portrait-frame">
+            <img
+              v-if="!profilePhotoFailed"
+              class="profile-photo"
+              :src="profilePhotoUrl"
+              alt="根深 渓太のプロフィール写真"
+              width="720"
+              height="900"
+              fetchpriority="high"
+              decoding="async"
+              @error="profilePhotoFailed = true"
+            />
+            <div
+              v-else
+              class="portrait-fallback"
+              role="img"
+              aria-label="NEBUKA KEITAのイニシャル"
+            >
+              <span>NK</span>
+              <small>NEBUKA KEITA</small>
+            </div>
+          </figure>
+
+          <div class="art-label portrait-label">
+            <span class="portrait-label-name">NEBUKA KEITA</span>
+            <span>Freelance Software Engineer</span>
           </div>
-          <div class="art-label">Built for the real world.</div>
         </div>
+        <!-- profile-photo:end -->
       
         </div>
       </section>

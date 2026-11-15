@@ -1117,3 +1117,127 @@ h3,
 }
 
 /* site-brand-name:end */
+
+/* profile-photo:start */
+
+.hero-art.portrait-area {
+  width: 100%;
+  min-width: 0;
+  min-height: 440px;
+  padding: 16px 12px 36px;
+  transform: none;
+}
+
+.portrait-area .portrait-frame {
+  position: relative;
+  width: min(100%, 320px);
+  height: auto;
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 6px solid #fff;
+  border-radius: 28px;
+  background: #e2e9f7;
+  box-shadow: 0 24px 60px #233d8018;
+  transform: none;
+}
+
+.profile-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  /* 顔の位置に合わせて縦方向の値を調整 */
+  object-position: center 35%;
+}
+
+.portrait-area .portrait-backdrop {
+  position: absolute;
+  width: min(78%, 300px);
+  height: auto;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--scene-border, #d5e0f7);
+  border-radius: 28px;
+  background: var(--scene-soft, #dfe8ff);
+  transform: translate(16px, 0) rotate(7deg);
+}
+
+.portrait-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #edf3ff, #dce5fa);
+  color: #3554c7;
+}
+
+.portrait-fallback > span {
+  font-size: 72px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.portrait-fallback > small {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.portrait-area .portrait-label {
+  right: 0;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 100%;
+  padding: 16px 20px;
+  border-radius: 14px;
+  line-height: 1.6;
+}
+
+.portrait-label-name {
+  color: #19263d;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.portrait-label > span:last-child {
+  color: #64748b;
+  font-size: 10px;
+}
+
+@media (max-width: 960px) {
+  .hero-art.portrait-area {
+    min-height: 370px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-art.portrait-area {
+    width: min(100%, 370px);
+    min-height: 0;
+    margin: 30px auto 0;
+    padding-bottom: 42px;
+  }
+
+  .portrait-area .portrait-frame {
+    width: min(86%, 280px);
+  }
+
+  .portrait-area .portrait-backdrop {
+    width: min(76%, 260px);
+  }
+
+  .portrait-area .portrait-label {
+    right: 0;
+    bottom: 12px;
+  }
+}
+
+/* profile-photo:end */
