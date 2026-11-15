@@ -28,3 +28,5 @@ pnpm-debug.log*
 !.vscode/settings.json
 *.swp
 *.swo
+
+gemini-scripts/

@@ -1,7 +1,6 @@
 #!/bin/zsh
 set -euo pipefail
 
-# スクリプトの配置場所からプロジェクトルートを特定
 SCRIPT_DIR="${0:A:h}"
 PROJECT_ROOT="${SCRIPT_DIR:h}"
 cd "$PROJECT_ROOT"
@@ -16,274 +15,247 @@ for command_name in node npm git; do
     || die "${command_name} が見つかりません。"
 done
 
-# 本スクリプトではNode.js 22以上を前提とする
-node -e 'process.exit(Number(process.versions.node.split(".")[0]) >= 22 ? 0 : 1)' \
-  || die "Node.js 22以上を使用してください。現在: $(node -v)"
+[[ -f package.json ]] || die "package.json が見つかりません。"
+[[ -f src/App.vue ]] || die "src/App.vue が見つかりません。"
+[[ -f src/styles/main.css ]] || die "src/styles/main.css が見つかりません。"
+[[ -f index.html ]] || die "index.html が見つかりません。"
 
-# 既存ファイルを誤って上書きしない
-for target in \
-  package.json package-lock.json \
-  index.html vite.config.ts tsconfig.json \
-  src public node_modules
-do
-  if [[ -e "$target" || -L "$target" ]]; then
-    die "${target} が存在します。上書きを避けるため停止しました。"
-  fi
-done
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+  || die "Gitリポジトリではありません。"
 
-# 親リポジトリ内での誤実行を防止
-if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  GIT_ROOT="$(git rev-parse --show-toplevel)"
-  [[ "${GIT_ROOT:A}" == "$PROJECT_ROOT" ]] \
-    || die "親ディレクトリのGitリポジトリ内です。配置場所を確認してください。"
+GIT_ROOT="$(git rev-parse --show-toplevel)"
+[[ "${GIT_ROOT:A}" == "$PROJECT_ROOT" ]] \
+  || die "Gitリポジトリのルートで実行してください。"
 
-  [[ -z "$(git status --porcelain --untracked-files=no)" ]] \
-    || die "追跡済みファイルに未コミットの変更があります。先に整理してください。"
-else
-  git init -b main
-fi
+[[ -z "$(git status --porcelain --untracked-files=no)" ]] \
+  || die "追跡済みファイルに未コミットの変更があります。先に整理してください。"
 
 git var GIT_AUTHOR_IDENT >/dev/null 2>&1 \
   || die "git config user.name と user.email を設定してください。"
 
-print -- "プロジェクトを作成します: $PROJECT_ROOT"
-
-mkdir -p src/plugins src/styles public
-
-# 既存の.gitignoreは保持して設定を追記
-if [[ ! -f .gitignore ]]; then
-  touch .gitignore
-fi
-
-if ! grep -Fqx '# homepage project ignores' .gitignore; then
-  cat >> .gitignore <<'EOF'
-
-# homepage project ignores
-node_modules/
-dist/
-.vite/
-coverage/
-*.tsbuildinfo
-
-# Local environment and secrets
-.env
-.env.*
-!.env.example
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# macOS / editors
-.DS_Store
-.AppleDouble
-.LSOverride
-.idea/
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-*.swp
-*.swo
-EOF
-fi
-
-cat > package.json <<'EOF'
-{
-  "name": "homepage",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "engines": {
-    "node": ">=22.0.0"
-  },
-  "scripts": {
-    "dev": "vite",
-    "typecheck": "vue-tsc --noEmit",
-    "build": "npm run typecheck && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "vue": "^3.5.0",
-    "vuetify": "^3.7.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.0",
-    "typescript": "~5.7.2",
-    "vite": "^6.0.0",
-    "vue-tsc": "^2.2.0"
-  }
-}
-EOF
-
-cat > vite.config.ts <<'EOF'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-
-export default defineConfig({
-  base: '/homepage/',
-  plugins: [vue()],
-})
-EOF
-
-cat > tsconfig.json <<'EOF'
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "skipLibCheck": true,
-    "moduleResolution": "Bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "types": ["vite/client"]
-  },
-  "include": ["src/**/*.ts", "src/**/*.vue"]
-}
-EOF
-
-cat > index.html <<'EOF'
-<!doctype html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f7f8fc" />
-    <title>Homepage</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
-</html>
-EOF
-
-cat > src/main.ts <<'EOF'
-import { createApp } from 'vue'
-import App from './App.vue'
-import vuetify from './plugins/vuetify'
-import './styles/main.css'
-
-createApp(App).use(vuetify).mount('#app')
-EOF
-
-cat > src/plugins/vuetify.ts <<'EOF'
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import {
-  VApp,
-  VMain,
-  VContainer,
-  VCard,
-  VChip,
-  VDivider,
-} from 'vuetify/components'
-
-export default createVuetify({
-  components: {
-    VApp,
-    VMain,
-    VContainer,
-    VCard,
-    VChip,
-    VDivider,
-  },
-  theme: {
-    defaultTheme: 'homepageLight',
-    themes: {
-      homepageLight: {
-        dark: false,
-        colors: {
-          background: '#F7F8FC',
-          surface: '#FFFFFF',
-          primary: '#405CE8',
-          secondary: '#64748B',
-          'on-background': '#17243B',
-          'on-surface': '#17243B',
-          'on-primary': '#FFFFFF',
-        },
-      },
-    },
-  },
-  defaults: {
-    VCard: {
-      elevation: 0,
-      rounded: 'xl',
-    },
-  },
-})
-EOF
+[[ -d node_modules ]] || npm ci
 
 cat > src/App.vue <<'EOF'
 <script setup lang="ts">
 const year = new Date().getFullYear()
+const baseUrl = import.meta.env.BASE_URL
+
+const services = [
+  {
+    number: '01',
+    title: 'Webアプリケーション開発',
+    description:
+      '使う人にとってのわかりやすさと、育てやすい設計を大切に。業務に合わせたWebアプリケーションを開発します。',
+    tags: ['Vue / React', 'TypeScript', 'UI / UX'],
+  },
+  {
+    number: '02',
+    title: '業務改善・自動化',
+    description:
+      '日々の繰り返し作業や、分散した情報を整理。Google Apps Scriptやスクリプトを活用し、業務の手間を減らします。',
+    tags: ['Google Apps Script', '業務ツール', '自動化'],
+  },
+  {
+    number: '03',
+    title: '既存システムの解析・改善',
+    description:
+      '既存コードと実際の動作を読み解き、仕様を整理。現場の運用を踏まえながら、改善や保守につなげます。',
+    tags: ['仕様化', 'リバースエンジニアリング', '保守・改善'],
+  },
+]
+
+const principles = [
+  {
+    number: '01',
+    title: 'まず、業務を理解する。',
+    description:
+      '何を作るかだけでなく、誰が、どんな場面で使うのか。目的や運用を整理するところから取り組みます。',
+  },
+  {
+    number: '02',
+    title: '小さく作り、確かめる。',
+    description:
+      '動くものを通して認識を合わせ、検証と改善を重ねながら、必要な形へ近づけます。',
+  },
+  {
+    number: '03',
+    title: 'その先の運用まで考える。',
+    description:
+      '見た目の整合性だけでなく、保守性や変更のしやすさも重視し、使い続けられる仕組みを目指します。',
+  },
+]
+
+const technologies = [
+  'TypeScript',
+  'React',
+  'Vue',
+  'Vuetify',
+  'Google Apps Script',
+  'VB.NET',
+  'Git',
+  '生成AIの活用',
+]
 </script>
 
 <template>
   <v-app>
-    <a class="skip-link" href="#main-content">
-      メインコンテンツへ
-    </a>
+    <a class="skip-link" href="#main-content">メインコンテンツへ</a>
 
     <header class="site-header">
-      <v-container class="site-container header-inner">
-        <a class="brand" :href="import.meta.env.BASE_URL" aria-label="ホーム">
+      <div class="page-width header-inner">
+        <a class="brand" :href="baseUrl" aria-label="radix-studio ホーム">
           <span class="brand-mark" aria-hidden="true"></span>
-          <span>Homepage</span>
+          radix-studio<span class="brand-dot">.</span>
         </a>
-        <span class="header-caption">A new space, coming soon.</span>
-      </v-container>
+
+        <nav class="navigation" aria-label="メインナビゲーション">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#approach">Approach</a>
+        </nav>
+      </div>
     </header>
 
     <v-main id="main-content" tabindex="-1">
-      <v-container class="site-container main-container">
-        <section class="intro" aria-labelledby="page-title">
-          <v-chip
-            color="primary"
-            variant="tonal"
-            size="small"
-            class="status-chip"
-          >
-            UNDER CONSTRUCTION
-          </v-chip>
-
-          <h1 id="page-title">
-            ここから、<br />
-            新しいページを。
+      <section class="hero page-width" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">FREELANCE SOFTWARE ENGINEER / SAPPORO</p>
+          <h1 id="hero-title">
+            日々の仕事に、<br />
+            <span>ちょうどいい仕組みを。</span>
           </h1>
-
-          <p class="intro-description">
-            現在、公開に向けて準備を進めています。
+          <p class="hero-description">
+            Webアプリケーションの開発から、業務の自動化、<br class="desktop-break" />
+            既存システムの改善まで。<br />
+            現場の課題を読み解き、使い続けられる形にします。
           </p>
-        </section>
-
-        <v-card class="content-placeholder" tag="section" aria-labelledby="content-title">
-          <div class="placeholder-symbol" aria-hidden="true">
-            <span></span><span></span><span></span>
+          <a class="primary-link" href="#services">
+            できることを見る <span aria-hidden="true">↗</span>
+          </a>
+          <div class="hero-signature">
+            <span class="signature-name">Keita Nebuka</span>
+            <span>フリーランスエンジニア / radix-studio</span>
           </div>
-          <p class="eyebrow">CONTENTS</p>
-          <h2 id="content-title">コンテンツは準備中です</h2>
-          <p>こちらに、今後お知らせする内容を掲載します。</p>
-        </v-card>
-      </v-container>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-orbit orbit-one"></div>
+          <div class="art-orbit orbit-two"></div>
+          <div class="art-card art-card-back"></div>
+          <div class="art-card art-card-front">
+            <div class="art-dots"><i></i><i></i><i></i></div>
+            <div class="art-code">&lt;build /&gt;</div>
+            <div class="art-line line-long"></div>
+            <div class="art-line line-medium"></div>
+            <div class="art-line line-short"></div>
+            <div class="art-divider"></div>
+            <div class="art-caption">IDEA → DESIGN → DEVELOPMENT</div>
+          </div>
+          <div class="art-label">Make work simpler.</div>
+        </div>
+      </section>
+
+      <section id="about" class="about-section section-anchor">
+        <div class="page-width about-layout">
+          <div>
+            <p class="eyebrow">ABOUT</p>
+            <h2>技術と業務の、<br />間に立つエンジニア。</h2>
+          </div>
+          <div class="about-copy">
+            <p>
+              北海道札幌市を拠点に、radix-studioとして活動する
+              フリーランスエンジニア、Keita Nebukaです。
+            </p>
+            <p>
+              フロントエンド開発や業務アプリケーションの設計、
+              Google Apps Scriptによる自動化、既存システムの解析・仕様化に取り組んでいます。
+            </p>
+            <p>
+              大切にしているのは、技術ありきではなく、実際の仕事に合うこと。
+              使いやすさと保守性の両面から、無理なく使い続けられる仕組みを考えます。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="services"
+        class="page-width section-block section-anchor"
+        aria-labelledby="services-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">WHAT I DO</p>
+            <h2 id="services-title">できること</h2>
+          </div>
+          <p class="section-caption">つくる。つなぐ。より良くする。</p>
+        </div>
+
+        <div class="service-grid">
+          <v-card
+            v-for="service in services"
+            :key="service.number"
+            tag="article"
+            class="service-card"
+          >
+            <span class="card-number">{{ service.number }}</span>
+            <h3>{{ service.title }}</h3>
+            <p class="service-description">{{ service.description }}</p>
+            <ul class="tag-list" aria-label="関連する技術と領域">
+              <li v-for="tag in service.tags" :key="tag">{{ tag }}</li>
+            </ul>
+          </v-card>
+        </div>
+      </section>
+
+      <section
+        id="approach"
+        class="page-width section-block section-anchor approach-section"
+        aria-labelledby="approach-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">MY APPROACH</p>
+            <h2 id="approach-title">大切にしていること</h2>
+          </div>
+        </div>
+
+        <div class="principle-list">
+          <article
+            v-for="principle in principles"
+            :key="principle.number"
+            class="principle"
+          >
+            <span class="principle-number">{{ principle.number }}</span>
+            <h3>{{ principle.title }}</h3>
+            <p>{{ principle.description }}</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="technology-section" aria-labelledby="technology-title">
+        <div class="page-width technology-layout">
+          <div>
+            <p class="eyebrow">TOOLS & TECHNOLOGIES</p>
+            <h2 id="technology-title">課題に合わせて、<br />技術を選ぶ。</h2>
+          </div>
+          <ul class="technology-list" aria-label="扱う技術やツール">
+            <li v-for="technology in technologies" :key="technology">
+              {{ technology }}
+            </li>
+          </ul>
+        </div>
+      </section>
     </v-main>
 
     <footer class="site-footer">
-      <v-container class="site-container">
-        <v-divider />
-        <div class="footer-inner">
-          <span>Homepage</span>
-          <small>© {{ year }} Homepage</small>
+      <div class="page-width footer-inner">
+        <div>
+          <a class="brand footer-brand" :href="baseUrl">radix-studio.</a>
+          <p>Software development, with your work in mind.</p>
         </div>
-      </v-container>
+        <small>© {{ year }} radix-studio</small>
+      </div>
     </footer>
   </v-app>
 </template>
@@ -299,151 +271,313 @@ cat > src/styles/main.css <<'EOF'
   -webkit-font-smoothing: antialiased;
 }
 
-html {
-  overflow-y: auto;
+html { overflow-y: auto; }
+body { margin: 0; }
+a { color: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid #405ce8; outline-offset: 5px; }
+
+.v-application {
+  background: #f8f9fc !important;
+  color: #19263d !important;
 }
 
-body {
-  margin: 0;
+.page-width {
+  width: min(1184px, calc(100% - 80px));
+  margin-inline: auto;
 }
 
-a {
-  color: inherit;
-}
-
-:focus-visible {
-  outline: 3px solid #405ce8;
-  outline-offset: 5px;
-}
-
-.site-container {
-  max-width: 1120px !important;
-  padding-inline: 32px;
-}
-
-.site-header {
-  background: rgba(255, 255, 255, 0.85);
-  border-bottom: 1px solid #e8ecf4;
-}
+.section-anchor { scroll-margin-top: 32px; }
+.site-header { border-bottom: 1px solid #e6eaf2; }
 
 .header-inner {
-  min-height: 88px;
+  min-height: 100px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   gap: 24px;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
   text-decoration: none;
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 750;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.06em;
 }
 
 .brand-mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #405ce8, #90a6ff);
-  box-shadow: 0 5px 14px #405ce824;
-}
-
-.header-caption {
-  color: #64748b;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-}
-
-.main-container {
-  padding-top: clamp(56px, 9vw, 112px);
-  padding-bottom: 80px;
-}
-
-.intro {
-  margin-bottom: 52px;
-}
-
-.status-chip {
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}
-
-h1 {
-  margin: 26px 0 22px;
-  font-size: clamp(36px, 6vw, 68px);
-  font-weight: 750;
-  line-height: 1.35;
-  letter-spacing: -0.045em;
-}
-
-.intro-description {
-  color: #64748b;
-  font-size: 16px;
-  line-height: 1.9;
-}
-
-.content-placeholder {
-  padding: clamp(32px, 5vw, 60px);
-  border: 1px solid #e5eaf3;
-  box-shadow: 0 18px 60px #17243b05 !important;
-}
-
-.placeholder-symbol {
-  width: 52px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  margin-bottom: 30px;
-  border-radius: 16px;
-  background: #eef1ff;
-}
-
-.placeholder-symbol span {
-  width: 5px;
-  border-radius: 4px;
+  width: 23px;
+  height: 23px;
+  margin-right: 11px;
+  border-radius: 7px;
   background: #405ce8;
+  transform: rotate(-12deg);
 }
 
-.placeholder-symbol span:nth-child(1) { height: 14px; }
-.placeholder-symbol span:nth-child(2) { height: 24px; }
-.placeholder-symbol span:nth-child(3) { height: 18px; }
+.brand-dot { color: #405ce8; }
+.navigation { display: flex; gap: 30px; }
+.navigation a {
+  padding-block: 10px;
+  text-decoration: none;
+  color: #536178;
+  font-size: 13px;
+}
+.navigation a:hover { color: #405ce8; }
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  align-items: center;
+  gap: 36px;
+  padding-block: 108px 100px;
+}
 
 .eyebrow {
-  margin-bottom: 12px;
+  margin-bottom: 20px;
   color: #405ce8;
   font-size: 11px;
   font-weight: 700;
+  line-height: 1.8;
   letter-spacing: 0.16em;
 }
 
-.content-placeholder h2 {
-  margin-bottom: 12px;
-  font-size: clamp(20px, 3vw, 26px);
-  line-height: 1.6;
-  letter-spacing: -0.03em;
+h1 {
+  font-size: clamp(34px, 4.1vw, 58px);
+  line-height: 1.55;
+  font-weight: 750;
+  letter-spacing: -0.055em;
 }
 
-.content-placeholder > p:last-child {
-  color: #64748b;
+h1 span { color: #405ce8; }
+
+.hero-description {
+  margin-top: 26px;
+  color: #536178;
+  font-size: 15px;
+  line-height: 2.1;
+}
+
+.primary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  min-height: 52px;
+  margin-top: 32px;
+  padding: 14px 22px;
+  border: 1px solid #405ce8;
+  border-radius: 12px;
+  background: #405ce8;
+  color: white;
   font-size: 14px;
-  line-height: 1.9;
+  text-decoration: none;
+}
+.primary-link:hover { background: #3049c5; }
+
+.hero-signature {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 42px;
+  color: #64748b;
+  font-size: 11px;
+}
+.signature-name {
+  color: #19263d;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.hero-art {
+  position: relative;
+  min-height: 400px;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.art-orbit {
+  position: absolute;
+  z-index: -1;
+  width: 350px;
+  height: 350px;
+  border: 1px solid #dfe5f5;
+  border-radius: 50%;
+}
+.orbit-two { width: 260px; height: 260px; }
+
+.art-card {
+  width: 290px;
+  height: 236px;
+  border: 1px solid #e2e7f3;
+  border-radius: 22px;
+}
+.art-card-back {
+  position: absolute;
+  background: #e9edff;
+  transform: translate(18px, 8px) rotate(10deg);
+}
+.art-card-front {
+  padding: 26px;
+  background: #fff;
+  box-shadow: 0 24px 70px #233d8012;
+  transform: rotate(-5deg);
+}
+.art-dots { display: flex; gap: 5px; }
+.art-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d9dfed;
+}
+.art-code {
+  margin-block: 23px 18px;
+  color: #405ce8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 30px;
+  font-weight: 600;
+}
+.art-line {
+  height: 6px;
+  margin-top: 9px;
+  border-radius: 6px;
+  background: #edf0f7;
+}
+.line-long { width: 87%; }
+.line-medium { width: 65%; }
+.line-short { width: 76%; }
+.art-divider { height: 1px; margin-top: 22px; background: #edf0f7; }
+.art-caption {
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+.art-label {
+  position: absolute;
+  bottom: 28px;
+  right: 4px;
+  padding: 14px 20px;
+  border: 1px solid #e2e7f3;
+  border-radius: 12px;
+  background: #fff;
+  color: #405ce8;
+  font-size: 12px;
+  box-shadow: 0 10px 30px #233d8008;
+}
+
+.about-section {
+  padding-block: 76px;
+  border-block: 1px solid #e6eaf2;
+  background: #fff;
+}
+.about-layout, .technology-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 80px;
+}
+h2 {
+  font-size: clamp(25px, 3vw, 34px);
+  line-height: 1.65;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+.about-copy { padding-top: 4px; }
+.about-copy p {
+  color: #536178;
+  font-size: 14px;
+  line-height: 2.15;
+}
+.about-copy p + p { margin-top: 18px; }
+
+.section-block { padding-block: 88px; }
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+.section-heading .eyebrow { margin-bottom: 12px; }
+.section-caption { color: #64748b; font-size: 13px; }
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.service-card {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 26px;
+  border: 1px solid #e4e9f3;
+}
+.card-number {
+  margin-bottom: 36px;
+  color: #405ce8;
+  font-size: 13px;
+  font-weight: 600;
+}
+h3 { font-size: 18px; line-height: 1.7; letter-spacing: -0.03em; }
+.service-description {
+  margin-block: 18px 28px;
+  color: #536178;
+  font-size: 13px;
+  line-height: 2;
+}
+.tag-list, .technology-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+.tag-list { margin-top: auto; }
+.tag-list li {
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #f3f5fb;
+  color: #536178;
+  font-size: 10px;
+}
+
+.approach-section { padding-top: 0; }
+.principle { 
+  display: grid;
+  grid-template-columns: 40px 1fr 1.35fr;
+  gap: 28px;
+  align-items: baseline;
+  padding-block: 28px;
+  border-top: 1px solid #dfe5ef;
+}
+.principle:last-child { border-bottom: 1px solid #dfe5ef; }
+.principle-number { color: #405ce8; font-size: 12px; }
+.principle p { color: #536178; font-size: 13px; line-height: 2; }
+
+.technology-section { padding-block: 72px; background: #edf1fa; }
+.technology-list { align-content: center; gap: 12px; }
+.technology-list li {
+  padding: 12px 17px;
+  border: 1px solid #dfe5f1;
+  border-radius: 10px;
+  background: #ffffffb3;
+  color: #43516a;
+  font-size: 13px;
 }
 
 .footer-inner {
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding-block: 24px;
-  color: #64748b;
-  font-size: 13px;
+  gap: 24px;
+  padding-block: 42px;
 }
+.footer-brand { font-size: 20px; }
+.footer-inner p { margin-top: 10px; color: #64748b; font-size: 11px; }
+.footer-inner small { color: #64748b; font-size: 11px; }
 
 .skip-link {
   position: fixed;
@@ -455,58 +589,82 @@ h1 {
   background: #fff;
   transform: translateY(-200%);
 }
+.skip-link:focus { transform: translateY(0); }
 
-.skip-link:focus {
-  transform: translateY(0);
+@media (max-width: 960px) {
+  .page-width { width: calc(100% - 48px); }
+  .hero { gap: 16px; padding-block: 72px; }
+  .hero-art { transform: scale(0.85); }
+  .about-layout, .technology-layout { gap: 36px; }
+  .service-grid { grid-template-columns: 1fr; }
+  .card-number { margin-bottom: 18px; }
+  .principle { grid-template-columns: 32px 1fr; gap: 12px; }
+  .principle p { grid-column: 2; }
 }
 
-@media (max-width: 600px) {
-  .site-container {
-    padding-inline: 24px;
-  }
+@media (max-width: 700px) {
+  .page-width { width: calc(100% - 40px); }
+  .header-inner { min-height: 82px; gap: 16px; flex-wrap: wrap; padding-block: 18px; }
+  .brand { font-size: 21px; }
+  .navigation { gap: 18px; }
+  .navigation a { font-size: 11px; }
+  .hero { grid-template-columns: 1fr; padding-block: 56px 32px; }
+  .hero .eyebrow { font-size: 9px; }
+  h1 { font-size: clamp(28px, 6.7vw, 42px); }
+  .hero-description { font-size: 14px; }
+  .desktop-break { display: none; }
+  .hero-art { min-height: 330px; margin-top: 4px; }
+  .art-label { right: 0; bottom: 10px; }
+  .about-layout, .technology-layout { grid-template-columns: 1fr; gap: 28px; }
+  .about-section, .technology-section { padding-block: 52px; }
+  .section-block { padding-block: 56px; }
+  .approach-section { padding-top: 0; }
+  .section-heading { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .footer-inner { align-items: flex-start; flex-direction: column; }
+}
 
-  .header-inner {
-    min-height: 76px;
-  }
-
-  .header-caption {
-    display: none;
-  }
-
-  .main-container {
-    padding-bottom: 56px;
-  }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .primary-link, .navigation a { transition: background-color 160ms, color 160ms; }
 }
 EOF
 
-# Vueテンプレート内から安全に参照できるよう変数化
+# タイトルと説明文を更新
 node --input-type=module <<'EOF'
 import fs from 'node:fs'
 
-const file = 'src/App.vue'
-let source = fs.readFileSync(file, 'utf8')
-source = source.replace(
-  'const year = new Date().getFullYear()',
-  'const year = new Date().getFullYear()\nconst baseUrl = import.meta.env.BASE_URL',
-)
-source = source.replace(
-  ':href="import.meta.env.BASE_URL"',
-  ':href="baseUrl"',
-)
-fs.writeFileSync(file, source)
-EOF
+const file = 'index.html'
+let html = fs.readFileSync(file, 'utf8')
 
-print -- "依存関係をインストールします..."
-npm install
+const title = 'radix-studio | Keita Nebuka — フリーランスエンジニア'
+const description =
+  '札幌を拠点に活動するフリーランスエンジニア、Keita Nebuka。Webアプリケーション開発、業務の自動化、既存システムの解析・改善に取り組んでいます。'
+
+if (!/<title>[\s\S]*?<\/title>/i.test(html)) {
+  throw new Error('index.html のtitle要素が見つかりません。')
+}
+
+html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`)
+
+const metaDescription = `<meta name="description" content="${description}" />`
+const existingDescription = /<meta\b(?=[^>]*\bname=["']description["'])[^>]*>/i
+
+if (existingDescription.test(html)) {
+  html = html.replace(existingDescription, metaDescription)
+} else {
+  html = html.replace('</head>', `    ${metaDescription}\n  </head>`)
+}
+
+fs.writeFileSync(file, html)
+EOF
 
 print -- "型チェックと本番ビルドを実行します..."
 npm run build
 
 print -- ""
-print -- "プロジェクトの作成とビルドが完了しました。"
-print -- "開発サーバー: npm run dev"
-print -- "表示URL: http://localhost:5173/homepage/"
-print -- "これから、未追跡ファイルも含めて変更をコミットします。"
+print -- "プロフィールページへの更新が完了しました。"
+print -- "確認: npm run dev"
+print -- "未追跡ファイルも含め、変更をコミットします。"
 
 git add .
-git commit -m 'Vuetify3のライトテーマでホームページの雛形を作成'
+git commit -m 'フリーランスエンジニアの紹介ページに更新'
