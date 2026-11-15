@@ -298,6 +298,12 @@ const corporateNavigation = [
     summary: '2005年からの職務経歴と、対応する技術領域。',
   },
   {
+    key: 'portfolio',
+    path: 'portfolio/',
+    label: 'ポートフォリオ',
+    summary: '公開している制作物と、GitHub・デモサイトへのリンク。',
+  },
+  {
     key: 'availability',
     path: 'availability/',
     label: '参画について',
@@ -325,6 +331,19 @@ const currentPageLabel =
 
 
 if (currentPage === 'home') usePageAnimations()
+
+type PortfolioItem = {
+  id: string
+  title: string
+  description: string
+  technologies: string[]
+  githubUrl?: string
+  demoUrl?: string
+}
+
+// 掲載する制作物を、この配列へ追加します。
+const portfolioItems: PortfolioItem[] = []
+
 </script>
 
 <template>
@@ -677,6 +696,83 @@ if (currentPage === 'home') usePageAnimations()
           </div>
         </div>
       </section>
+    
+      <section
+        v-if="currentPage === 'portfolio'"
+        class="scene-section section-anchor portfolio-section"
+        data-scene="portfolio"
+        aria-labelledby="portfolio-title"
+      >
+        <div class="page-width">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">PORTFOLIO</p>
+              <h2 id="portfolio-title">ポートフォリオ</h2>
+            </div>
+            <p class="section-caption">公開している制作物をご紹介します。</p>
+          </div>
+
+          <p class="portfolio-introduction">
+            アプリケーションや開発ツールなど、公開している制作物を掲載します。
+            ソースコードやデモサイトから、具体的な内容をご覧いただけます。
+          </p>
+
+          <div v-if="portfolioItems.length" class="portfolio-grid">
+            <article
+              v-for="item in portfolioItems"
+              :key="item.id"
+              class="portfolio-card"
+            >
+              <p class="portfolio-card-label">PROJECT</p>
+              <h3>{{ item.title }}</h3>
+              <p class="portfolio-description">{{ item.description }}</p>
+
+              <ul
+                v-if="item.technologies.length"
+                class="tag-list"
+                aria-label="使用技術"
+              >
+                <li v-for="technology in item.technologies" :key="technology">
+                  {{ technology }}
+                </li>
+              </ul>
+
+              <div
+                v-if="item.githubUrl || item.demoUrl"
+                class="portfolio-links"
+              >
+                <a
+                  v-if="item.githubUrl"
+                  :href="item.githubUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                  <span class="portfolio-visually-hidden">（新しいタブで開く）</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+                <a
+                  v-if="item.demoUrl"
+                  :href="item.demoUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  デモを見る
+                  <span class="portfolio-visually-hidden">（新しいタブで開く）</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <div v-else class="portfolio-empty">
+            <span class="portfolio-empty-mark" aria-hidden="true">&lt;/&gt;</span>
+            <h3>公開準備中です</h3>
+            <p>制作物の紹介を順次追加していきます。</p>
+          </div>
+        </div>
+      </section>
+
     </v-main>
 
     <footer class="site-footer">

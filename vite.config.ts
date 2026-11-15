@@ -16,6 +16,7 @@ export default defineConfig({
         projects: entry('./projects/index.html'),
         career: entry('./career/index.html'),
         availability: entry('./availability/index.html'),
+        portfolio: entry('./portfolio/index.html'),
       },
     },
   },
