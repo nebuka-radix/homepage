@@ -533,3 +533,27 @@ h3 { font-size: 18px; line-height: 1.7; letter-spacing: -0.03em; }
   .availability-details > div { grid-template-columns: 90px minmax(0, 1fr); gap: 12px; }
   .availability-details dd { font-size: 14px; }
 }
+
+/* gsap-animation-support */
+
+/* フォーカス時のスクロール位置に少し余白を確保 */
+.project-card,
+.service-card,
+.career-item,
+.skill-group,
+.principle {
+  scroll-margin-top: 32px;
+}
+
+/* OSの設定に合わせてCSS側の動きも停止 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  .primary-link,
+  .navigation a,
+  .secondary-link {
+    transition: none !important;
+  }
+}

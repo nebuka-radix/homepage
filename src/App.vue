@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usePageAnimations } from './composables/usePageAnimations'
 const year = new Date().getFullYear()
 const baseUrl = import.meta.env.BASE_URL
 
@@ -173,6 +174,8 @@ const principles = [
       '新しい技術は、導入するだけでなく使える手順に。AI活用や自動化も、チームで共有・再現できる形に整えます。',
   },
 ]
+
+usePageAnimations()
 </script>
 
 <template>
