@@ -264,14 +264,86 @@ const principles = [
   },
 ]
 
-usePageAnimations()
-
 useSceneColors()
 
 const profilePhotoFailed = createPhotoRef(false)
 const profilePhotoUrl = `${import.meta.env.BASE_URL}images/profile.jpg`
 
 useMobilePresentation()
+
+const corporateNavigation = [
+  { key: 'home', path: '', label: 'ホーム', summary: '' },
+  {
+    key: 'about',
+    path: 'about/',
+    label: 'プロフィール',
+    summary: '自己紹介と、仕事で大切にしていること。',
+  },
+  {
+    key: 'services',
+    path: 'services/',
+    label: 'サービス',
+    summary: '業務システム、制御・計測、Web開発、AI活用。',
+  },
+  {
+    key: 'projects',
+    path: 'projects/',
+    label: '実績紹介',
+    summary: 'これまで担当した主要案件と具体的な取り組み。',
+  },
+  {
+    key: 'career',
+    path: 'career/',
+    label: '経歴・スキル',
+    summary: '2005年からの職務経歴と、対応する技術領域。',
+  },
+  {
+    key: 'portfolio',
+    path: 'portfolio/',
+    label: 'ポートフォリオ',
+    summary: '公開している制作物と、GitHub・デモサイトへのリンク。',
+  },
+  {
+    key: 'availability',
+    path: 'availability/',
+    label: '参画について',
+    summary: '参画可能日、勤務形態、出張対応について。',
+  },
+]
+
+const siteBasePath = import.meta.env.BASE_URL
+const relativePagePath = window.location.pathname.startsWith(siteBasePath)
+  ? window.location.pathname.slice(siteBasePath.length)
+  : ''
+
+const pageSegment = relativePagePath
+  .replace(/index.html$/, '')
+  .split('/')
+  .filter(Boolean)[0] ?? ''
+
+const currentPage =
+  corporateNavigation.find((item) => item.path === `${pageSegment}/`)?.key
+  ?? 'home'
+
+const currentPageLabel =
+  corporateNavigation.find((item) => item.key === currentPage)?.label
+  ?? 'ホーム'
+
+
+if (currentPage === 'home') usePageAnimations()
+
+type PortfolioItem = {
+  id: string
+  title: string
+  description: string
+  technologies: string[]
+  githubUrl?: string
+  demoUrl?: string
+}
+
+// 掲載する制作物を、この配列へ追加します。
+const portfolioItems: PortfolioItem[] = []
+
 </script>
 
 <template>
@@ -287,17 +359,32 @@ useMobilePresentation()
           <span class="brand-mark" aria-hidden="true"></span>
           NEBUKA KEITA
         </a>
-        <nav class="navigation" aria-label="メインナビゲーション">
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#projects">Projects</a>
-          <a href="#availability">参画について</a>
+        
+        <nav class="navigation corporate-navigation" aria-label="メインナビゲーション">
+          <a
+            v-for="item in corporateNavigation"
+            :key="item.key"
+            :href="siteBasePath + item.path"
+            :aria-current="currentPage === item.key ? 'page' : undefined"
+          >
+            {{ item.label }}
+          </a>
         </nav>
       </div>
     </header>
 
     <v-main id="main-content" tabindex="-1">
-      <section class="scene-section" aria-labelledby="hero-title" data-scene="hero">
+      <nav
+        v-if="currentPage !== 'home'"
+        class="page-width corporate-breadcrumb"
+        aria-label="パンくずリスト"
+      >
+        <a :href="siteBasePath">ホーム</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ currentPageLabel }}</span>
+      </nav>
+
+      <section v-if="currentPage === 'home'" class="scene-section" aria-labelledby="hero-title" data-scene="hero">
         <div class="page-width hero">
         <div class="hero-copy">
           <p class="eyebrow">FREELANCE SOFTWARE ENGINEER / TOKYO</p>
@@ -311,10 +398,10 @@ useMobilePresentation()
             導入・立上げまで一貫して取り組みます。
           </p>
           <div class="hero-actions">
-            <a class="primary-link" href="#projects">
+            <a class="primary-link" :href="siteBasePath + 'projects/'">
               取り組んできたこと <span aria-hidden="true">↗</span>
             </a>
-            <a class="secondary-link" href="#availability">参画条件を見る</a>
+            <a class="secondary-link" :href="siteBasePath + 'availability/'">参画条件を見る</a>
           </div>
           <div class="hero-signature">
             <span class="signature-name">根深 渓太 / Nebuka Keita</span>
@@ -360,14 +447,14 @@ useMobilePresentation()
         </div>
       </section>
 
-      <div class="page-width highlight-grid" aria-label="経験と対応領域">
+      <div v-if="currentPage === 'home'" class="page-width highlight-grid" aria-label="経験と対応領域">
         <div v-for="item in highlights" :key="item.value" class="highlight-item">
           <span class="highlight-value">{{ item.value }}</span>
           <span class="highlight-label">{{ item.label }}</span>
         </div>
       </div>
 
-      <section id="about" class="about-section section-anchor scene-section" aria-labelledby="about-title" data-scene="about">
+      <section v-if="currentPage === 'about'" id="about" class="about-section section-anchor scene-section" aria-labelledby="about-title" data-scene="about">
         <div class="page-width about-layout">
           <div>
             <p class="eyebrow">ABOUT</p>
@@ -396,7 +483,7 @@ useMobilePresentation()
         </div>
       </section>
 
-      <section id="services" class="section-anchor scene-section" aria-labelledby="services-title" data-scene="services">
+      <section v-if="currentPage === 'services'" id="services" class="section-anchor scene-section" aria-labelledby="services-title" data-scene="services">
         <div class="page-width">
         <div class="section-heading">
           <div>
@@ -419,7 +506,7 @@ useMobilePresentation()
         </div>
       </section>
 
-      <section id="projects" class="projects-section section-anchor scene-section" aria-labelledby="projects-title" data-scene="projects">
+      <section v-if="currentPage === 'projects'" id="projects" class="projects-section section-anchor scene-section" aria-labelledby="projects-title" data-scene="projects">
         <div class="page-width">
           <div class="section-heading">
             <div>
@@ -453,7 +540,7 @@ useMobilePresentation()
         </div>
       </section>
 
-      <section
+      <section v-if="currentPage === 'career'"
         class="scene-section section-anchor"
         aria-labelledby="career-title"
         data-scene="career"
@@ -512,7 +599,7 @@ useMobilePresentation()
         </div>
       </section>
 
-      <section class="technology-section scene-section" aria-labelledby="skills-title" data-scene="skills">
+      <section v-if="currentPage === 'career'" class="technology-section scene-section" aria-labelledby="skills-title" data-scene="skills">
         <div class="page-width">
           <div class="section-heading">
             <div>
@@ -535,7 +622,7 @@ useMobilePresentation()
         </div>
       </section>
 
-      <section class="scene-section" aria-labelledby="approach-title" data-scene="approach">
+      <section v-if="currentPage === 'about'" class="scene-section" aria-labelledby="approach-title" data-scene="approach">
         <div class="page-width">
         <div class="section-heading">
           <div>
@@ -554,7 +641,7 @@ useMobilePresentation()
         </div>
       </section>
 
-      <section id="availability" class="availability-section section-anchor scene-section" aria-labelledby="availability-title" data-scene="availability">
+      <section v-if="currentPage === 'availability'" id="availability" class="availability-section section-anchor scene-section" aria-labelledby="availability-title" data-scene="availability">
         <div class="page-width availability-layout">
           <div>
             <p class="eyebrow">AVAILABILITY</p>
@@ -580,6 +667,112 @@ useMobilePresentation()
           </dl>
         </div>
       </section>
+    
+      <section
+        v-if="currentPage === 'home'"
+        class="corporate-directory"
+        aria-labelledby="directory-title"
+      >
+        <div class="page-width">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">CONTENTS</p>
+              <h2 id="directory-title">NEBUKA KEITAについて</h2>
+            </div>
+          </div>
+
+          <div class="corporate-directory-grid">
+            <template v-for="item in corporateNavigation" :key="item.key">
+              <a
+                v-if="item.key !== 'home'"
+                class="corporate-directory-card"
+                :href="siteBasePath + item.path"
+              >
+                <h3>{{ item.label }}</h3>
+                <p>{{ item.summary }}</p>
+                <span class="directory-arrow" aria-hidden="true">↗</span>
+              </a>
+            </template>
+          </div>
+        </div>
+      </section>
+    
+      <section
+        v-if="currentPage === 'portfolio'"
+        class="scene-section section-anchor portfolio-section"
+        data-scene="portfolio"
+        aria-labelledby="portfolio-title"
+      >
+        <div class="page-width">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">PORTFOLIO</p>
+              <h2 id="portfolio-title">ポートフォリオ</h2>
+            </div>
+            <p class="section-caption">公開している制作物をご紹介します。</p>
+          </div>
+
+          <p class="portfolio-introduction">
+            アプリケーションや開発ツールなど、公開している制作物を掲載します。
+            ソースコードやデモサイトから、具体的な内容をご覧いただけます。
+          </p>
+
+          <div v-if="portfolioItems.length" class="portfolio-grid">
+            <article
+              v-for="item in portfolioItems"
+              :key="item.id"
+              class="portfolio-card"
+            >
+              <p class="portfolio-card-label">PROJECT</p>
+              <h3>{{ item.title }}</h3>
+              <p class="portfolio-description">{{ item.description }}</p>
+
+              <ul
+                v-if="item.technologies.length"
+                class="tag-list"
+                aria-label="使用技術"
+              >
+                <li v-for="technology in item.technologies" :key="technology">
+                  {{ technology }}
+                </li>
+              </ul>
+
+              <div
+                v-if="item.githubUrl || item.demoUrl"
+                class="portfolio-links"
+              >
+                <a
+                  v-if="item.githubUrl"
+                  :href="item.githubUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                  <span class="portfolio-visually-hidden">（新しいタブで開く）</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+                <a
+                  v-if="item.demoUrl"
+                  :href="item.demoUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  デモを見る
+                  <span class="portfolio-visually-hidden">（新しいタブで開く）</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <div v-else class="portfolio-empty">
+            <span class="portfolio-empty-mark" aria-hidden="true">&lt;/&gt;</span>
+            <h3>公開準備中です</h3>
+            <p>制作物の紹介を順次追加していきます。</p>
+          </div>
+        </div>
+      </section>
+
     </v-main>
 
     <footer class="site-footer">
