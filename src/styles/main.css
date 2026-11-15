@@ -1019,3 +1019,77 @@ h3 { font-size: 18px; line-height: 1.7; letter-spacing: -0.03em; }
     font-size: 11px;
   }
 }
+
+/* compact-line-height:start */
+
+:root {
+  --line-height-hero: 1.4;
+  --line-height-heading: 1.45;
+  --line-height-card-heading: 1.5;
+  --line-height-body: 1.75;
+  --line-height-list: 1.65;
+  --line-height-caption: 1.6;
+}
+
+.v-application {
+  line-height: var(--line-height-body);
+}
+
+/* 見出し */
+h1 {
+  line-height: var(--line-height-hero);
+}
+
+h2 {
+  line-height: var(--line-height-heading);
+}
+
+h3,
+.timeline-card h3,
+.project-body h3,
+.content-placeholder h2 {
+  line-height: var(--line-height-card-heading);
+}
+
+/* 本文：既存の詳細セレクターも上書き */
+.hero-description,
+.intro-description,
+.about-copy p,
+.service-description,
+.project-summary,
+.principle p,
+.career-introduction,
+.career-item p,
+.career-timeline .timeline-summary,
+.skills-note,
+.availability-description,
+.content-placeholder > p:last-child {
+  line-height: var(--line-height-body);
+}
+
+/* 箇条書き */
+.project-details,
+.timeline-details,
+.profile-facts {
+  line-height: var(--line-height-list);
+}
+
+/* 補足・ラベル */
+.eyebrow,
+.highlight-label,
+.project-period,
+.project-role,
+.project-note,
+.timeline-date time,
+.timeline-date > span,
+.timeline-role,
+.timeline-detail-title,
+.career-timeline .timeline-organization,
+.career-timeline .timeline-note,
+.availability-details dt,
+.scene-section .availability-details dd,
+.footer-inner p {
+  line-height: var(--line-height-caption);
+}
+
+/* compact-line-height:end */
